@@ -8,31 +8,50 @@ import java.util.*;
  */
 public class Main {
 
-    public List<List<Integer>> threeSum(int[] arr) {
-        Arrays.sort(arr);
+    public String longestPalindrome(String s) {
+        if (s == null) {
+            return null;
+        }
 
-        List<List<Integer>> result = new ArrayList<>();
+        int           longest = 1;
 
-        for (int i = 0; i < arr.length; i++) {
-            if (i == 0 || arr[i] != arr[i - 1]) {
-                int l = i + 1, r = arr.length - 1;
-                while (l < r) {
-                    if (l > i + 1 && arr[l] == arr[l - 1]) {
-                        l++;
-                    } else if (r < arr.length - 1 && arr[r] == arr[r + 1]) {
-                        r--;
-                    } else if (arr[l] + arr[r] > -arr[i]) {
-                        r--;
-                    } else if (arr[l] + arr[r] < -arr[i]) {
-                        l++;
-                    } else {
-                        result.add(Arrays.asList(arr[i], arr[l], arr[r]));
-                        l++;
-                        r--;
-                    }
+        char[] chars = s.toCharArray();
+        StringBuilder sb      = new StringBuilder(String.valueOf(chars[0]));
+
+        for (int i = 0; i < s.length() - 1; i++) {
+            int tempLongest = 0;
+            int l = i, r = i + 1;
+            StringBuilder str = new StringBuilder();
+            while (l >= 0 && chars[l] == chars[i]) {
+                str.append(chars[l]);
+                l--;
+                tempLongest++;
+            }
+            while (r < s.length() && chars[r] == chars[i]) {
+                str.append(chars[r]);
+                r++;
+                tempLongest++;
+            }
+            while (l >= 0 && r < s.length()) {
+                if (chars[l] != chars[r]) {
+                    break;
+                } else {
+                    str.insert(0, s.charAt(l));
+                    str.append(s.charAt(r));
+                    l--;
+                    r++;
+                    tempLongest = tempLongest + 2;
                 }
             }
+            if (tempLongest > longest) {
+                longest = tempLongest;
+                sb = str;
+            }
         }
-        return result;
+        return sb.toString();
+    }
+
+    public static void main(String[] args) {
+        System.out.println(new Main().longestPalindrome("ababbabba"));
     }
 }
