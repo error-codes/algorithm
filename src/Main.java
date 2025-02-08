@@ -9,49 +9,30 @@ import java.util.*;
 public class Main {
 
     public String longestPalindrome(String s) {
-        if (s == null) {
-            return null;
-        }
+        if (s.length() == 1)
+            return s;
 
-        int           longest = 1;
+        char[] chars  = s.toCharArray();
+        String ans    = "";
+        int    length = 0;
 
-        char[] chars = s.toCharArray();
-        StringBuilder sb      = new StringBuilder(String.valueOf(chars[0]));
-
-        for (int i = 0; i < s.length() - 1; i++) {
-            int tempLongest = 0;
-            int l = i, r = i + 1;
-            StringBuilder str = new StringBuilder();
-            while (l >= 0 && chars[l] == chars[i]) {
-                str.append(chars[l]);
-                l--;
-                tempLongest++;
+        for (int i = 0; i < chars.length; i++) {
+            int left = i - 1, right = i + 1;
+            while (left >= 0 && chars[left] == chars[i]) {
+                left--;
             }
-            while (r < s.length() && chars[r] == chars[i]) {
-                str.append(chars[r]);
-                r++;
-                tempLongest++;
+            while (right < chars.length && chars[right] == chars[i]) {
+                right++;
             }
-            while (l >= 0 && r < s.length()) {
-                if (chars[l] != chars[r]) {
-                    break;
-                } else {
-                    str.insert(0, s.charAt(l));
-                    str.append(s.charAt(r));
-                    l--;
-                    r++;
-                    tempLongest = tempLongest + 2;
-                }
+            while (left >= 0 && right < chars.length && chars[left] == chars[right]) {
+                left--;
+                right++;
             }
-            if (tempLongest > longest) {
-                longest = tempLongest;
-                sb = str;
+            if (right - left + 1 > length) {
+                length = right - left + 1;
+                ans = s.substring(left + 1, right);
             }
         }
-        return sb.toString();
-    }
-
-    public static void main(String[] args) {
-        System.out.println(new Main().longestPalindrome("ababbabba"));
+        return ans;
     }
 }
