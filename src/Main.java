@@ -8,31 +8,28 @@ import java.util.*;
  */
 public class Main {
 
-    public String longestPalindrome(String s) {
-        if (s.length() == 1)
-            return s;
 
-        char[] chars  = s.toCharArray();
-        String ans    = "";
-        int    length = 0;
+    public int minimumRecolors(String blocks, int k) {
+        char[] colors = blocks.toCharArray();
 
-        for (int i = 0; i < chars.length; i++) {
-            int left = i - 1, right = i + 1;
-            while (left >= 0 && chars[left] == chars[i]) {
-                left--;
+        int update = Integer.MAX_VALUE;
+        int white = 0;
+
+        for (int i = 0; i < colors.length; i++) {
+            if (colors[i] == 'W') {
+                white++;
             }
-            while (right < chars.length && chars[right] == chars[i]) {
-                right++;
+            if (i < k - 1) {
+                continue;
             }
-            while (left >= 0 && right < chars.length && chars[left] == chars[right]) {
-                left--;
-                right++;
-            }
-            if (right - left + 1 > length) {
-                length = right - left + 1;
-                ans = s.substring(left + 1, right);
-            }
+            update = Math.min(update, white);
+            white = colors[i - k + 1] == 'W' ? white - 1 : white;
         }
-        return ans;
+        return update;
+    }
+
+
+    public static void main(String[] args) {
+        System.out.println(Arrays.toString(new Main().getAverages(new int[]{7, 4, 3, 9, 1, 8, 5, 2, 6}, 3)));
     }
 }
