@@ -9,27 +9,29 @@ import java.util.*;
 public class Main {
 
 
-    public int minimumRecolors(String blocks, int k) {
-        char[] colors = blocks.toCharArray();
+    public int maxScore(int[] cardPoints, int k) {
+        int maxScore = 0;
+        int score    = 0;
 
-        int update = Integer.MAX_VALUE;
-        int white = 0;
-
-        for (int i = 0; i < colors.length; i++) {
-            if (colors[i] == 'W') {
-                white++;
-            }
-            if (i < k - 1) {
+        // 因为只能从左右两边开始取，那其实可以将这副牌看成一个环状
+        // 从左边一直拿，或者从右边一直拿，分别是两个极限
+        for (int i = cardPoints.length - k; i < cardPoints.length + k; i++) {
+            score += cardPoints[i % cardPoints.length];
+            if (i < cardPoints.length - 1) {
                 continue;
             }
-            update = Math.min(update, white);
-            white = colors[i - k + 1] == 'W' ? white - 1 : white;
+            maxScore = Math.max(maxScore, score);
+            if (i == cardPoints.length + k - 1) {
+                break;
+            }
+            score -= cardPoints[i - k + 1];
         }
-        return update;
+
+        return maxScore;
     }
 
 
     public static void main(String[] args) {
-        System.out.println(Arrays.toString(new Main().getAverages(new int[]{7, 4, 3, 9, 1, 8, 5, 2, 6}, 3)));
+        System.out.println(new Main().maxScore(new int[]{96, 90, 41, 82, 39, 74, 64, 50, 30}, 8));
     }
 }
