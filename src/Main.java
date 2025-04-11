@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,22 +10,31 @@ import java.util.Map;
 public class Main {
 
 
-    public int[] getSubarrayBeauty(int[] nums, int k, int x) {
-        int count = 0;
-        int[] ans = new int[nums.length - k + 1];
-        int
-        for (int i = 0; i < nums.length; i++) {
-            if (i < k - 1) {
-                continue;
-            }
-
-
+    public boolean checkInclusion(String s1, String s2) {
+        int[] s1Count = new int[26];
+        int[] s2Count = new int[26];
+        int k = s1.length();
+        int l = s2.length();
+        if (k > l) {
+            return false;
         }
+        for (int i = 0; i < k; i++) {
+            s1Count[s1.charAt(i) - 'a']++;
+            s2Count[s2.charAt(i) - 'a']++;
+        }
+        for (int i = k; i <= l; i++) {
+            if (Arrays.equals(s1Count, s2Count)) {
+                return true;
+            }
+            s2Count[s2.charAt(i - k) - 'a']--;
+            s2Count[s2.charAt(i) - 'a']++;
+        }
+        return Arrays.equals(s1Count, s2Count);
     }
 
+
     public static void main(String[] args) {
-        int freq = new Main().maxFreq("aababcaab", 2, 3, 4);
-        System.out.println(freq);
+        System.out.println(new Main().checkInclusion("adc", "dcda"));
     }
 
 }
